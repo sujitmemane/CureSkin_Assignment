@@ -1,10 +1,13 @@
 import React, { useEffect, useState } from "react";
+import { MoonLoader } from "react-spinners";
 import JobPost from "./JobPost";
 
 const JobBoard = () => {
   const [allJobIds, setAllJobIds] = useState([]);
-  const [jobPosts, setJobPosts] = useState([{"by": "jamilbk", "id": 35908337, "score": 1, "time": 1683838872, "title": "Firezone (YC W22) is hiring Elixir and Rust engineers", "type": "job", "url": "https://www.ycombinator.com/companies/firezone/jobs" }
-]);
+  const [startingIndex, setStartingIndex] = useState(0);
+  const [endingIndex, setEndingIndex] = useState(6);
+  const [buttonHide, setButtonHide] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchAllJobIds = async () => {
@@ -12,44 +15,65 @@ const JobBoard = () => {
         const response = await fetch(
           "https://hacker-news.firebaseio.com/v0/jobstories.json"
         );
-        const data = await response.json();
-        setAllJobIds(data);
+        if (response.ok) {
+          const data = await response.json();
+          setAllJobIds(data);
+          setLoading(false);
+        } else {
+          setLoading(false);
+          console.error("Error fetching job IDs:", response.statusText);
+        }
       } catch (error) {
-        console.error(error);
-      }
-    };
-
-    
-    const fetchJobPosts = async () => {
-      try {
-        const response = await fetch(
-          "https://api.example.com/jobposts" 
-        );
-        const data = await response.json();
-        setJobPosts(data);
-      } catch (error) {
-        console.error(error);
+        setLoading(false);
+        console.error("Error fetching job IDs:", error);
       }
     };
 
     fetchAllJobIds();
-    fetchJobPosts();
   }, []);
 
-  return (
-    <div className="my-8 py-4 w-full">
-      <div className="px-8 flex flex-col items-center justify-between space-y-4">
-        {jobPosts.map((job) => (
-          <JobPost key={job.id} data={job} />
-        ))}
-      </div>
+  const loadMoreJobs = () => {
+    setStartingIndex(endingIndex);
+    setEndingIndex((prev) => prev + 6);
+    if (endingIndex + 6 >= allJobIds.length) {
+      setButtonHide(true);
+    }
+    setLoading(true);
+    setTimeout(() => {
+      setLoading(false);
+    }, 1000);
+  };
 
-      <div className="flex items-center justify-center my-4">
-        <button className="px-6 py-3 bg-white text-black hover:bg-black hover:text-white font-semibold rounded transition duration-300 ease-in-out transform hover:scale-105">
-          Load More Jobs
-        </button>
-      </div>
+  console.log(startingIndex, endingIndex);
+  console.log(allJobIds.length);
+
+  return (
+    <div>
+    <div className="my-8 py-4 w-full">
+      {loading ? (
+        <div className="w-full h-[600px] flex items-center justify-center">
+          <MoonLoader color="#ffffff" size={60} />
+        </div>
+      ) : (
+        <div className="px-8 flex flex-col items-center justify-between space-y-4">
+          {allJobIds.slice(startingIndex, endingIndex).map((jobID) => (
+            <JobPost key={jobID} jobID={jobID} />
+          ))}
+        </div>
+      )}
+
+      {!buttonHide && (
+        <div className="fixed bottom-4 left-0 w-full flex items-center justify-center my-4">
+          <button
+            className="px-6 py-3 bg-white text-black hover:bg-black hover:text-white font-semibold rounded transition duration-300 ease-in-out transform hover:scale-105"
+            onClick={loadMoreJobs}
+          >
+            Load More Jobs
+          </button>
+        </div>
+      )}
     </div>
+  </div>
   );
 };
 
