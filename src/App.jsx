@@ -10,8 +10,8 @@ function App() {
 
   return (
     <>
-<div>
-  <h1 className='text-4xl font-black '>
+<div className=''>
+  <h1 className='text-4xl  text-primary font-bold '>
     Hacker News Job Boards
   </h1>
   <JobBoard/>

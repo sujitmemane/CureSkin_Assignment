@@ -32,7 +32,7 @@ const JobPost = ({ jobID }) => {
 
   return (
     <a href={job.url} target='_blank' className="w-full">
-      <div className="py-4 px-4 w-full bg-white text-black border-white rounded flex flex-col items-start transition duration-300 transform hover:scale-105 shadow-md cursor-pointer">
+      <div className="py-4 px-4 w-full bg-white text-black border-white rounded flex flex-col items-start transition duration-300 transform hover:scale-105  cursor-pointer">
         <h1 className="font-bold text-xl mb-2">{job.title}</h1>
         <div className="text-sm text-gray-600">
           <span className="mr-2">By {job.by}</span>

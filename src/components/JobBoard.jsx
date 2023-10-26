@@ -52,7 +52,7 @@ const JobBoard = () => {
     <div className="my-8 py-4 w-full">
       {loading ? (
         <div className="w-full h-[600px] flex items-center justify-center">
-          <MoonLoader color="#ffffff" size={60} />
+          <MoonLoader color="#ff6602" size={60} />
         </div>
       ) : (
         <div className="px-8 flex flex-col items-center justify-between space-y-4">
@@ -65,7 +65,7 @@ const JobBoard = () => {
       {!buttonHide && (
         <div className="relative bottom-0 left-0 w-full flex items-center justify-center my-4">
           <button
-            className="px-6 py-3 bg-white text-black hover:bg-black hover:text-white font-semibold rounded transition duration-300 ease-in-out transform hover:scale-105"
+            className="px-6 py-3 bg-primary text-white hover:bg-black hover:text-white font-semibold rounded transition duration-300 ease-in-out transform hover:scale-105"
             onClick={loadMoreJobs}
           >
             Load More Jobs
