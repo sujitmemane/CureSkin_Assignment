@@ -63,7 +63,7 @@ const JobBoard = () => {
       )}
 
       {!buttonHide && (
-        <div className="fixed bottom-4 left-0 w-full flex items-center justify-center my-4">
+        <div className="fixed bottom-0 left-0 w-full flex items-center justify-center my-4">
           <button
             className="px-6 py-3 bg-white text-black hover:bg-black hover:text-white font-semibold rounded transition duration-300 ease-in-out transform hover:scale-105"
             onClick={loadMoreJobs}
